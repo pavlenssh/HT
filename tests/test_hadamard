@@ -1,0 +1,61 @@
+import numpy as np
+import unittest
+from hadamard import hadamard_transform, inverse_hadamard_transform, hadamard_matrix, add_noise, denoise_signal
+
+class HadamardTransformTestCase(unittest.TestCase):
+    def test_hadamard_transform(self):
+        signal = np.array([1, 2, 3, 4])
+
+        expected_transformed_signal = np.array([-5, -1, 1, -1])
+
+        transformed_signal = hadamard_transform(signal)
+
+        np.testing.assert_array_equal(transformed_signal, expected_transformed_signal)
+
+class InverseHadamardTransformTestCase(unittest.TestCase):
+    def test_inverse_hadamard_transform(self):
+        transformed_signal = np.array([-5, -1, 1, -1])
+
+        expected_signal = np.array([1, 2, 3, 4])
+
+        signal = inverse_hadamard_transform(transformed_signal)
+
+        np.testing.assert_array_equal(signal, expected_signal)
+
+class HadamardMatrixTestCase(unittest.TestCase):
+    def test_hadamard_matrix(self):
+        N = 4
+
+        expected_matrix = np.array([[1,  1,  1,  1],
+                                   [1, -1,  1, -1],
+                                   [1,  1, -1, -1],
+                                   [1, -1, -1,  1]])
+
+        matrix = hadamard_matrix(N)
+
+        np.testing.assert_array_equal(matrix, expected_matrix)
+
+def test_add_noise():
+    signal = np.array([1, 2, 3, 4])
+
+    noise_level = 0.5
+    noisy_signal = add_noise(signal, noise_level)
+
+    assert (noisy_signal != signal).any()
+    assert len(noisy_signal) == len(signal)
+
+def test_denoise_signal():
+    signal = np.array([1, 2, 3, 4])
+    noise_level = 0.5
+
+    noisy_signal = add_noise(signal, noise_level)
+    denoised_signal = denoise_signal(noisy_signal)
+
+    assert (denoised_signal == signal).all()
+    assert len(denoised_signal) == len(signal)
+    
+if __name__ == '__main__':
+    unittest.main()
+
+test_add_noise()
+test_denoise_signal()
