@@ -1,0 +1,4 @@
+librosa>=0.8.1
+numpy>=1.21.0
+scipy>=1.10.0
+matplot>= 3.7.1
